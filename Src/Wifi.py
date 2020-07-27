@@ -1,4 +1,7 @@
+from util.IO import IO
 from netifaces import interfaces
+from subprocess import Popen, PIPE
+
 
 '''
     Class responsible for automating the process of recording 
@@ -21,13 +24,37 @@ class WiFi:
     def scanAdapters(self):
         nic = []
 
-        for dev in interfaces:
+        for dev in interfaces():
             if 'lo' not in dev and 'eno' not in dev and 'vm' not in dev:
                 nic.append(dev)
         return nic
 
+    '''
+        Parses the list of available NIC's and sets the
+        first available device to monitor mode.
+        @return: The name of the device set to monitor mode,
+                 or None
+    '''
     def setMonMode(self):
-        return
+        set_dev = False
+
+        for dev in self.NICs:
+            try:
+                # Shut down the device
+                msg = Popen(['ifconfig ', dev, ' down'], stdout = PIPE, stderr = PIPE)
+                stdout, stderr = msg.communicate()
+
+                # Attempt to put device in monitor mode
+                msg = Popen(['ifconfig ', dev, ' mode', ' monitor'], stdout = PIPE, stderr = PIPE)
+                stdout, stderr = msg.communicate()
+
+                # Success. Return device name.
+                return dev
+
+            except Exception as e:
+                IO.writeToErrorLog(e)
+                break
+
 
     def enumSSID(self):
         return

@@ -1,4 +1,5 @@
-from pcap import pcapObject
+from scapy.all import rdpcap
+from datetime import datetime
 from socket import socket, AF_PACKET, SOCK_RAW
 
 '''
@@ -15,19 +16,15 @@ class IO:
         @return: Boolean value representing the success of the method.
     '''
     def sendDeauth(self, AP, CLI, NIC):
-
+        file = rdpcap('/artifacts/deauth.pcap')
+        s = socket(AF_PACKET, SOCK_RAW)
         '''
             Code is currently incorrect and needs
             to be reexamined. Code can be used as a template.
         '''
-
-        s = socket(AF_PACKET, SOCK_RAW)
-        pc = pcapObject()
-        pc.open_offline("/home/richard/Desktop/deauth.pcap")
-        packet_file = open("deauth.pcap")
         s.bind(("wlan0mon", 0))
 
-        deauth = pc.next()
+
 
         # Make sure I have the correct bytes for Dest Addr
         # print binascii.hexlify(deauth[1][17:23])
@@ -61,3 +58,16 @@ class IO:
     '''
     def writeFile(self, data):
         return
+
+    '''
+        Writes an error message to a log file.
+        Each entry has the date and time and is 
+        appended to the same file.
+        @param: error: Error message to be logged.
+    '''
+    def writeToErrorLog(self, error):
+        file = open('/artifacts/Error Log.txt', 'a+')
+        timestamp = ''.join([datetime.today().strftime('%Y-%m-%d-%H:%M:%S'), '-' * 20, '\n'])
+
+        file.write(timestamp + '\n\n')
+        file.close()
