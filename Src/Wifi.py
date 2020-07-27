@@ -1,7 +1,7 @@
 from netifaces import interfaces
 
 '''
-    Class responsible for automating the process of recording
+    Class responsible for automating the process of recording 
     access point information and capturing WPA2 handshakes.
 '''
 class WiFi:
