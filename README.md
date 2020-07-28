@@ -2,7 +2,7 @@
 
 #### A python-based script that automates capturing WPA/WPA2 handshakes
 
-####Requires:
+#### Requires:
 
 Library | Link
 ------------ | -------------
