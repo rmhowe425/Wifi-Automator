@@ -1,9 +1,9 @@
 import unittest
-
+from util.IO import IO
 
 class MyTestCase(unittest.TestCase):
-    def test_something(self):
-        self.assertEqual(True, False)
+    def test_writeToErrorLog(self):
+        return
 
 
 if __name__ == '__main__':

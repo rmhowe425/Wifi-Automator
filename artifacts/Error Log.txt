@@ -1,0 +1,23 @@
+2020-07-27-21:19:51--------------------
+[Errno 2] No such file or directory: 'ifconfig '
+
+2020-07-27-21:20:55
+--------------------
+[Errno 2] No such file or directory: 'ifconfig '
+
+2020-07-27-21:21:56
+--------------------
+[Errno 2] No such file or directory: 'ifconfig '
+
+2020-07-27-21:22:35
+--------------------
+[Errno 2] No such file or directory: 'ifconfig '
+
+2020-07-27-21:35:34
+--------------------
+You must run this program as root.
+
+2020-07-27-21:37:04
+--------------------
+You must run this program as root.
+
