@@ -5,7 +5,8 @@ from subprocess import Popen, PIPE
 from scapy.all import sniff, rdpcap, send
 from socket import socket, AF_PACKET, SOCK_RAW
 
-'''
+
+''' 
     Class responsible for automating the process of recording 
     access point information and capturing WPA2 handshakes.
 '''
