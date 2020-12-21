@@ -5,9 +5,6 @@
 #### Requires:
 
 
-'System.out.print("A");'
-
-
 Library | Link
 ------------ | -------------
 Scapy | https://scapy.readthedocs.io/en/latest/index.html
