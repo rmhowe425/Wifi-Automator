@@ -5,6 +5,23 @@ from datetime import datetime
 '''
 class IO:
 
+    @staticmethod
+    def readConfigFile():
+        file_path = '../artifacts/wifi.config'
+        config = {'[Adapter]': '', '[Whitelist]': ''}
+
+        file = open(file_path, 'r')
+        contents = file.read().split("\n")
+
+        for i in range(len(contents)):
+            if contents[i] == '[Adapter]':
+                config['[Adapter]'] = contents[i + 1].strip()
+            elif contents[i] == '[Whitelist]':
+                config['[Whitelist]'] = contents[i + 1].strip()
+
+        file.close()
+        return config
+
     '''
         Writes an error message to a log file.
         Each entry has the date and time and is 
@@ -13,16 +30,14 @@ class IO:
     '''
     @staticmethod
     def writeToErrorLog(error):
-        file = open('../artifacts/Error Log.txt', 'a+')
+        flag = True
         timestamp = ''.join([datetime.today().strftime('%Y-%m-%d-%H:%M:%S'), '\n', '-' * 20, '\n'])
 
-        file.write(timestamp + error + '\n\n')
-        file.close()
+        try:
+            file = open('../artifacts/Error Log.txt', 'a+')
+            file.write(timestamp + error + '\n\n')
+            file.close()
+        except IOError:
+            flag = False
 
-    '''
-        Used to clear the error log during testing. 
-    '''
-    @staticmethod
-    def clearErrorLog(self):
-        file = open('../artifacts/Error Log.txt', 'w')
-        file.close()
+        return flag

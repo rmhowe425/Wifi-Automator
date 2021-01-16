@@ -1,8 +1,10 @@
 import unittest
 from Src.Wifi import WiFi
-
+from util.IO import IO
 '''
     Unit test for the Wifi class.
+    [*] TESTS MUST BE RAN AS ROOT [*]
+    --> Must be root to set wireless NIC to monitor mode <--
 '''
 class MyTestCase(unittest.TestCase):
 
@@ -10,37 +12,25 @@ class MyTestCase(unittest.TestCase):
         Tests the constructor for the WiFi class.
     '''
     def test_init(self):
-        wifi_inst = WiFi()
-        self.assertEqual(len(wifi_inst.NICs), 0)
-        self.assertEqual(len(wifi_inst.SSIDs), 0)
+        inst = WiFi()
 
-    '''
-        Tests the scanAdapters method in the WiFi class.
-    '''
-    def test_scanAdapters(self):
-        wifi_inst = WiFi()
+        self.assertEqual(inst.tCount, 99)
+        self.assertEqual(len(inst.SSIDs), 0)
+        self.assertFalse(inst.done)
+        self.assertEqual(len(inst.buff), inst.tCount)
 
-        # hard coded list of adapters on rmhowe425's desktop
-        devices = ['eno1', 'lo', 'vmnet1', 'vmnet8', 'wlx00c0ca6daed8']
-        wifi_inst.scanAdapters()
+        for item in inst.buff:
+            self.assertEqual(item, '')
 
-        self.assertTrue(len(wifi_inst.NICs) == 1)
-        self.assertEqual('wlx00c0ca6daed8', wifi_inst.NICs[0])
 
     '''
         Tests the setMonMode method in the WiFi class.
     '''
-    def test_setMonMode(self):
-        wifi_inst = WiFi()
-        wifi_inst.scanAdapters()
+    def test_SetMonMode(self):
+        inst = WiFi()
 
-        # Test towards end of implementation - Program must be ran as root.
-        #self.assertEqual(wifi_inst.setMonMode(), True)
-        #self.assertEqual(wifi_inst.NICs[0], wifi_inst.device)
-        self.assertTrue(True)
-
-
-
+        config = IO.readConfigFile()
+        self.assertEqual(config['[Adapter]'], inst.setMonMode(config['[Adapter]']))
 
 
 

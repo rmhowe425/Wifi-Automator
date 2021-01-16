@@ -21,38 +21,37 @@ class WiFi:
         self.SSIDs = {}
         self.done = False
         self.buff = [''] * self.tCount
-        self.NICs = self.scanAdapters()
 
     '''
         Parses the list of available NIC's and 
         sets a specified device to monitor mode.
         @param nic: Specified device to be set to monitor mode. 
-        @return: Name of device set to monitor mode. 
+        @return: Name of device set to monitor mode, or ''. 
     '''
     def setMonMode(self, nic):
-        device = ''
-
-        # Make sure that the script is running as root(Needs to be able to perform packet injection).
+        # Make sure that the script is running as root
         if geteuid() != 0:
             IO.writeToErrorLog('You must run this program as root.')
 
         else:
-            for dev in self.NICs:
-                if dev is nic:
-                    try:
-                        # Shut down the device
-                        msg = Popen(['ifconfig', dev, 'down'], stderr = PIPE)
-                        msg.communicate() # Not saving output.
+            device = ''
+            try:
+                # Shut down the device
+                msg = Popen(['ifconfig', 'wlx00c0ca977230', 'down'], stderr=PIPE, shell=False)
+                msg.communicate()  # Not saving output.
 
-                        # Attempt to put device in monitor mode
-                        msg = Popen(['iwconfig', dev, 'mode', 'monitor'], stderr = PIPE)
-                        msg.communicate() # Not saving output.
+                # Attempt to put device in monitor mode
+                msg = Popen(['iwconfig', nic, 'mode', 'monitor'], stderr=PIPE, shell=False)
+                msg.communicate()  # Not saving output.
 
-                        device = dev
-                        break
-                    except Exception as e:
-                        IO.writeToErrorLog(e)
-        return device
+                # Bring the device back up
+                msg = Popen(['ifconfig', nic, 'up'], stderr=PIPE, shell=False)
+                msg.communicate()  # Not saving output.
+                device = nic
+            except Exception as e:
+                IO.writeToErrorLog(e)
+
+            return device
 
     '''
         Filters and stores packets based on specified properties.
@@ -80,7 +79,7 @@ class WiFi:
                 if packet[offset] == 0x80:
                     iEE_offset, ap_info = ieee80211_parse(packet, offset)
                     start = iEE_offset + 14
-
+                    
                     # SSID
                     ssid = (packet[start: start + packet[iEE_offset + 13]]).decode()
                     # Power
@@ -111,8 +110,6 @@ class WiFi:
             while True:
                 self.buff[Id] = sniff.__next__()[1]
                 Id = (Id + 1) % 10
-
         except KeyboardInterrupt:
             for worker in thread_pool:
                 worker.thread.join()
-            return None

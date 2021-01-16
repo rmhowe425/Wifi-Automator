@@ -12,9 +12,9 @@ class AccessPoint:
         @param channel: Channel # that the access point is running on.
     '''
     def __init__(self, MAC, SSID, dBm, channel):
-        self.MAC = self.SetMAC(MAC)
-        self.SSID = self.SetSSID(SSID)
-        self.dBm = self.SetdBm(dBm)
+        self.MAC = self.setMAC(MAC)
+        self.SSID = self.setSSID(SSID)
+        self.dBm = self.setdBm(dBm)
         self.channel = self.setChannel(channel)
         self.handshake = False
 
@@ -23,7 +23,7 @@ class AccessPoint:
         @param: MAC: MAC address of the access point.
         @return: String containing the MAC address of the access point. 
     '''
-    def SetMAC(self, MAC):
+    def setMAC(self, MAC):
         # Future work for potential string verification
         return MAC
 
@@ -32,7 +32,7 @@ class AccessPoint:
         @param SSID: Visible name of the access point.
         @return: String containing the SSID of the access point.
     '''
-    def SetSSID(self, SSID):
+    def setSSID(self, SSID):
         # Future work for potential string verification
         return SSID
 
@@ -41,7 +41,7 @@ class AccessPoint:
         @param: dBm: Integer value of the strength of the access point. 
         @return: Integer value containing the strength of the access point. 
     '''
-    def SetdBm(self, dBm):
+    def setdBm(self, dBm):
         # Future work for number verification
         return dBm
 
@@ -59,4 +59,4 @@ class AccessPoint:
         Should only be called once.
     '''
     def setHandshake(self):
-        self.handshake = not self.handshake
+        self.handshake = True
